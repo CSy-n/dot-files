@@ -1,0 +1,258 @@
+* Initialization
+ This Source code is placed in *~/.emacs*.
+
+#+BEGIN_SRC emacs-lisp
+ (package-initialize)
+
+
+
+(org-babel-load-file
+ (expand-file-name "config.org" user-emacs-directory))
+
+#+END_SRC
+
+
+* Prelude 
+#+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
+   ;; (setq inhibit-startup-echo-area-message (user-login-name))
+  ;; (setq inhibit-startup-message t)
+  ;;(setq inhibit-startup-screen t)
+  ;; (setq inhibit-startup-message t inhibit-startup-echo-area-message "brody") 
+   <<package-management>>
+   <<customizations>>
+
+
+
+  ;; (setq inhibit-startup-message t)
+   ;external---------------
+   ;architecture-----------
+   ;origin-----------------
+   ;source-----------------
+   ;core-------------------
+   ;exo-arch---------------
+
+   ; The external operating environment
+   (setq base (expand-file-name "~/base/"))
+
+
+  (setq initial-buffer-choice 
+     (expand-file-name "journal.org" base))
+
+
+#+END_SRC
+
+
+
+
+* Package Management
+
+#+NAME: package-management
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+  ;; PACKAGING
+
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+
+  (push (expand-file-name "~/.emacs.d/metrics/" "~/.emacs.d/org-mode") load-path)
+  (add-to-list 'load-path '"~/.emacs.d/metrics/")
+  (add-to-list 'load-path '"~/.emacs.d/org-mode")
+
+#+END_SRC
+
+
+
+
+* Aesthetic Customizations
+
+#+NAME: customizations
+#+BEGIN_SRC emacs-lisp :tangle yes
+  ; CUSTOMIZATIONS
+
+   (set 'custom-file (expand-file-name "custom.el" user-emacs-directory))
+   (load-theme 'sonar t)
+  ;;(load-theme 'monokai t)
+   (load custom-file)
+#+END_SRC
+
+
+* General Configuration
+
+#+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
+
+
+  ; Disable ringing-sound
+  (setq ring-bell-function 'ignore)
+
+
+  ;Scrolling (Smooth)
+  (setq scroll-conservatively 10000)
+
+
+
+  ; Emacs C source files...
+  (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
+
+
+
+
+  ;UTILITY
+
+  ;Command-log mode to display or log commands?
+  ;; (require 'command-log-mode)
+
+  ;key-metrics
+  ;==============================
+  ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+
+  ;; (require 'command-frequency)
+  ;(command-frequency-table-load)
+  ;; (command-frequency-mode 1)
+  ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+
+
+
+
+
+
+  ; MODES
+
+  ;; Lisp interaction Mode
+
+
+  (setq tab-always-indent 'complete)
+  ;DEFAULT
+
+
+  ;Allow narrow-to-region
+  (put 'narrow-to-region 'disabled nil)
+
+
+  (find-file-noselect "/home/brody/base/Interim/thoughts.org")
+
+
+
+  ;Enable which-key-mode
+  (which-key-mode)
+
+#+END_SRC
+
+
+
+
+
+
+
+* Completion Framework [Helm, Ido]
+
+#+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
+
+  (ido-mode t)
+  ;; (setq ido-enable-flex-matching t)
+  ;; (global-set-key (kbd "M-x") 'helm-M-x)
+
+
+#+END_SRC 
+
+
+* Default Window Configuration [Frame Management]
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+
+  ;THEMATICS
+
+  ;Enable global highlight-line mode
+  (global-hl-line-mode)
+
+  ;Menu Bar Toggle
+  (menu-bar-mode 1)
+
+    ;Tool Bar Toggle
+  (tool-bar-mode -1)
+
+  ;Scroll Bar Toggle
+  (toggle-scroll-bar -1)
+
+
+
+#+END_SRC
+
+
+* Mode Specific Configuration
+
+
+** Schemes
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+
+  (add-hook 'clojure-mode-hook           #'cider-mode)
+
+#+END_SRC
+
+
+** [Org Mode]
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+;ORG MODE
+
+
+;Setting a Global Tag system for org-mode
+;; (:startgroup . nil)
+;; (:endgroup . nil)
+;; <Gramtically around the tag>
+;; (:newline)
+;; <To indicate a new line break>
+(set 'org-tag-persistent-alist '(("org_mode" . ?o )
+		      ("documentation" . ?d)
+		      ("emacs" . ?e)
+		      ("project_management" . ?p)
+		      ("journal_entry" . ?j))
+     
+     )
+
+
+
+
+
+
+
+
+
+;org-mode babel
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((racket . t)))
+
+
+(setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
+
+
+
+
+
+;org-mode miscelenaous
+
+;Enable tabs in code-blocks for org-mode
+(setq org-src-tab-acts-natively t)
+
+
+
+
+;; Global keys suggested for Org mode
+(global-set-key (kbd "\C-c l") 'org-store-link)
+(global-set-key (kbd "\C-c c") 'org-capture)
+(global-set-key (kbd "\C-c a") 'org-agenda)
+(global-set-key (kbd "\C-c p") 'org-iswitchb)
+
+
+
+#+END_SRC
+
