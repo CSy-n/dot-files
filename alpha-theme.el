@@ -45,8 +45,6 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
- '(org-default-notes-file "~/base/Documents/notes.org")
- '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
     (monokai-theme which-key company cider paredit rust-mode ace-window helm geiser solarized-theme command-log-mode paradox)))

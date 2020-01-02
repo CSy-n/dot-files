@@ -31,8 +31,8 @@
    ;core-------------------
    ;exo-arch---------------
 
-   ; The external operating environment
-   (setq base (expand-file-name "~/base/"))
+  ; The external operating environment
+  (setq base (expand-file-name "~/base/"))
 
 
   (setq initial-buffer-choice 
@@ -42,6 +42,21 @@
 #+END_SRC
 
 
+
+
+* Development
+
+#+NAME: development-setup
+#+BEGIN_SRC emacs-lisp :tangle yes
+
+  (setq emacs-development t)
+
+  (eval-after-load "config"
+    (if (eq emacs-development t)
+       (message "Development Mode enabled...")))
+
+
+#+END_SRC
 
 
 * Package Management
@@ -68,10 +83,10 @@
 #+BEGIN_SRC emacs-lisp :tangle yes
   ; CUSTOMIZATIONS
 
-   (set 'custom-file (expand-file-name "custom.el" user-emacs-directory))
-   (load-theme 'sonar t)
-  ;;(load-theme 'monokai t)
+   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
    (load custom-file)
+   (load-theme 'alpha t)
+
 #+END_SRC
 
 
@@ -80,59 +95,59 @@
 #+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
 
 
-  ; Disable ringing-sound
-  (setq ring-bell-function 'ignore)
+
+    ; Open file 
+    (find-file-noselect "~/base/Interim/thoughts.org")
+
+ 
+    ; Disable ringing-sound
+    (setq ring-bell-function 'ignore)
 
 
-  ;Scrolling (Smooth)
-  (setq scroll-conservatively 10000)
+    ;Scrolling (Smooth)
+    (setq scroll-conservatively 10000)
 
 
-
-  ; Emacs C source files...
-  (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
-
-
-
-
-  ;UTILITY
-
-  ;Command-log mode to display or log commands?
-  ;; (require 'command-log-mode)
-
-  ;key-metrics
-  ;==============================
-  ;; When you want to know the command frequency, type “Alt+x command-frequency”.
-
-  ;; (require 'command-frequency)
-  ;(command-frequency-table-load)
-  ;; (command-frequency-mode 1)
-  ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+    ; Emacs C source files...
+    (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
 
 
 
+    ;UTILITY
+
+    ;Command-log mode to display or log commands?
+    ;; (require 'command-log-mode)
+
+    ;key-metrics
+    ;==============================
+    ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+
+    ;; (require 'command-frequency)
+    ;(command-frequency-table-load)
+    ;; (command-frequency-mode 1)
+    ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
 
 
 
-  ; MODES
-
-  ;; Lisp interaction Mode
-
-
-  (setq tab-always-indent 'complete)
-  ;DEFAULT
-
-
-  ;Allow narrow-to-region
-  (put 'narrow-to-region 'disabled nil)
-
-
-  (find-file-noselect "/home/brody/base/Interim/thoughts.org")
 
 
 
-  ;Enable which-key-mode
-  (which-key-mode)
+    ; MODES
+
+    ;; Lisp interaction Mode
+
+
+    (setq tab-always-indent 'complete)
+    ;DEFAULT
+
+
+    ;Allow narrow-to-region
+    (put 'narrow-to-region 'disabled nil)
+
+
+
+    ;Enable which-key-mode
+    (which-key-mode)
 
 #+END_SRC
 
@@ -200,22 +215,20 @@
 
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-;ORG MODE
+  ;ORG MODE
 
 
-;Setting a Global Tag system for org-mode
-;; (:startgroup . nil)
-;; (:endgroup . nil)
-;; <Gramtically around the tag>
-;; (:newline)
-;; <To indicate a new line break>
-(set 'org-tag-persistent-alist '(("org_mode" . ?o )
-		      ("documentation" . ?d)
-		      ("emacs" . ?e)
-		      ("project_management" . ?p)
-		      ("journal_entry" . ?j))
-     
-     )
+  ;Setting a Global Tag system for org-mode
+  ;; (:startgroup . nil)
+  ;; (:endgroup . nil)
+  ;; <Gramtically around the tag>
+  ;; (:newline)
+  ;; <To indicate a new line break>
+  (set 'org-tag-persistent-alist '(("org_mode" . ?o )
+			("documentation" . ?d)
+			("emacs" . ?e)
+			("project_management" . ?p)
+			("journal_entry" . ?j)))
 
 
 
@@ -225,32 +238,31 @@
 
 
 
-;org-mode babel
+  ;org-mode babel
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((racket . t)))
-
-
-(setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((racket . t)))
 
 
+  (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
 
 
+  ;Enable tabs in code-blocks for org-mode
+  (setq org-src-tab-acts-natively t)
 
-;org-mode miscelenaous
+  ; Default Notes File
+  (setq org-default-notes-file "~/base/Interim/thoughts.org")
 
-;Enable tabs in code-blocks for org-mode
-(setq org-src-tab-acts-natively t)
+  ; Enable syntax highlighting
+  (setq org-src-fontify-natively t)
 
 
-
-
-;; Global keys suggested for Org mode
-(global-set-key (kbd "\C-c l") 'org-store-link)
-(global-set-key (kbd "\C-c c") 'org-capture)
-(global-set-key (kbd "\C-c a") 'org-agenda)
-(global-set-key (kbd "\C-c p") 'org-iswitchb)
+  ;; Global keys suggested for Org mode
+  (global-set-key (kbd "\C-c l") 'org-store-link)
+  (global-set-key (kbd "\C-c c") 'org-capture)
+  (global-set-key (kbd "\C-c a") 'org-agenda)
+  (global-set-key (kbd "\C-c p") 'org-iswitchb)
 
 
 

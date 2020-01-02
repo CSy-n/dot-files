@@ -41,7 +41,6 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
- '(org-default-notes-file "~/base/Documents/notes.org")
 
 
  '(package-selected-packages
