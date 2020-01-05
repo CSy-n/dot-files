@@ -139,6 +139,9 @@
  '(isearch-fail ((((class color) (min-colors 89)) (:foreground "#dc322f" :background "#002b36" :bold t))))
  '(widget-field ((((class color) (min-colors 89)) (:background "#073642"))))
 
+ ; Eshell
+ '(eshell-prompt ((t (:foreground "olive drab" :weight bold))))
+ 
 
  ; Font Lock
  '(font-lock-builtin-face ((((class color) (min-colors 89)) (:foreground "#839496" :weight bold :slant normal))))

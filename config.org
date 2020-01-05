@@ -1,7 +1,7 @@
 * Initialization
  This Source code is placed in *~/.emacs*.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
  (package-initialize)
 
 
@@ -62,15 +62,16 @@
 * Package Management
 
 #+NAME: package-management
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle no
 
   ;; PACKAGING
 
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
   (push (expand-file-name "~/.emacs.d/metrics/" "~/.emacs.d/org-mode") load-path)
-  (add-to-list 'load-path '"~/.emacs.d/metrics/")
-  (add-to-list 'load-path '"~/.emacs.d/org-mode")
+  (add-to-list 'load-path '"~/.emacs.d/metrics")
+  (add-to-list 'load-path '"~/.emacs.d/org-mode/")
+  (add-to-list 'load-path '"~/.emacs.d/ax/")
 
 #+END_SRC
 
@@ -80,7 +81,7 @@
 * Aesthetic Customizations
 
 #+NAME: customizations
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle no
   ; CUSTOMIZATIONS
 
    (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
