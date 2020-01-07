@@ -14,29 +14,44 @@
 
 * Prelude 
 #+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
-   ;; (setq inhibit-startup-echo-area-message (user-login-name))
+  ;; (setq inhibit-startup-echo-area-message (user-login-name))
   ;; (setq inhibit-startup-message t)
   ;;(setq inhibit-startup-screen t)
   ;; (setq inhibit-startup-message t inhibit-startup-echo-area-message "brody") 
-   <<package-management>>
-   <<customizations>>
+  <<package-management>>
+  <<customizations>>
 
 
 
   ;; (setq inhibit-startup-message t)
-   ;external---------------
-   ;architecture-----------
-   ;origin-----------------
-   ;source-----------------
-   ;core-------------------
-   ;exo-arch---------------
+                                          ;external---------------
+                                          ;architecture-----------
+                                          ;origin-----------------
+                                          ;source-----------------
+                                          ;core-------------------
+                                          ;exo-arch---------------
 
-  ; The external operating environment
+                                          ; The external operating environment
   (setq base (expand-file-name "~/base/"))
 
 
-  (setq initial-buffer-choice 
-     (expand-file-name "journal.org" base))
+  ;; (setq initial-buffer-choice 
+  ;;       (expand-file-name "journal.org" base))
+
+
+  ;; Open a default file if no command-line arguments
+  ;; Otherwise visit instead
+  (let ((journal (expand-file-name "journal.org" base)))
+    (if (> (length command-line-args) 1) 
+        (find-file-noselect journal)
+      (setq initial-buffer-choice journal))
+    journal)
+
+                                          ; Open file 
+  (find-file-noselect "~/base/Interim/thoughts.org")
+
+  ;; (find-file-noselect
+  ;;  (expand-file-name "journal.org" base)))   
 
 
 #+END_SRC
