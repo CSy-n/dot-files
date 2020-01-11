@@ -229,11 +229,66 @@
 #+END_SRC
 
 
+
 ** [Org Mode]
 
 
 #+BEGIN_SRC emacs-lisp :tangle yes
    ;ORG MODE
+
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; function to wrap blocks of text in org templates                       ;;
+    ;; e.g. latex or src etc                                                  ;;
+    ;; http://pragmaticemacs.com/emacs/wrap-text-in-an-org-mode-block/        ;;                             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (defun ax-org-begin-template ()
+      "Make a template at point."
+      (interactive)
+      (if (org-at-table-p)
+          (call-interactively 'org-table-rotate-recalc-marks)
+        (let* ((choices '(("s" . "SRC")
+                          ("e" . "EXAMPLE")
+                          ("q" . "QUOTE")
+                          ("v" . "VERSE")
+                          ("c" . "CENTER")
+                          ("l" . "LaTeX")
+                          ("h" . "HTML")
+                          ("a" . "ASCII")))
+               (key
+                (key-description
+                 (vector
+                  (read-key
+                   (concat (propertize "Template type: " 'face 'minibuffer-prompt)
+                           (mapconcat (lambda (choice)
+                                        (concat (propertize (car choice) 'face 'font-lock-type-face)
+                                                ": "
+                                                (cdr choice)))
+                                      choices
+                                      ", ")))))))
+          (let ((result (assoc key choices)))
+            (when result
+              (let ((choice (cdr result)))
+                (cond
+                 ((region-active-p)
+                  (let ((start (region-beginning))
+                        (end (region-end)))
+                    (goto-char end)
+                    (insert "\n#+END_" choice)
+                    (goto-char start)
+                    (insert "#+BEGIN_" choice)
+                    (if (equal choice "SRC")
+                        (insert " emacs-lisp"))
+                    (insert "\n")))
+                 (t
+                  (insert "#+BEGIN_" choice "\n")
+                  (save-excursion (insert "#+END_" choice))))))))))
+
+
+
+
+
+
+
 
 
    ;Setting a Global Tag system for org-mode
@@ -276,6 +331,10 @@
 
    ; Enable syntax highlighting
    (setq org-src-fontify-natively t)
+
+
+   ; Defines a keybinding for the source block template
+   (define-key org-mode-map (kbd "C-<") 'ax-org-begin-template)
 
 
    ;; Global keys suggested for Org mode
