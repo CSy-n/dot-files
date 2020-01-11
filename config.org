@@ -112,58 +112,60 @@
 
 
 
-    ; Open file 
-    (find-file-noselect "~/base/Interim/thoughts.org")
+      ; Open file 
+      (find-file-noselect "~/base/Interim/thoughts.org")
+
+   
+      ; Disable ringing-sound
+      (setq ring-bell-function 'ignore)
+
+
+      ;Scrolling (Smooth)
+      (setq scroll-conservatively 10000)
+
+
+      ; Emacs C source files...
+      (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
+
+
+
+      ;UTILITY
+
+      ;Command-log mode to display or log commands?
+      ;; (require 'command-log-mode)
+
+      ;key-metrics
+      ;==============================
+      ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+
+      ;; (require 'command-frequency)
+      ;(command-frequency-table-load)
+      ;; (command-frequency-mode 1)
+      ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+
 
  
-    ; Disable ringing-sound
-    (setq ring-bell-function 'ignore)
-
-
-    ;Scrolling (Smooth)
-    (setq scroll-conservatively 10000)
-
-
-    ; Emacs C source files...
-    (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
-
-
-
-    ;UTILITY
-
-    ;Command-log mode to display or log commands?
-    ;; (require 'command-log-mode)
-
-    ;key-metrics
-    ;==============================
-    ;; When you want to know the command frequency, type “Alt+x command-frequency”.
-
-    ;; (require 'command-frequency)
-    ;(command-frequency-table-load)
-    ;; (command-frequency-mode 1)
-    ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+  (setq-default major-mode 'org-mode)
 
 
 
 
+      ; MODES
+
+      ;; Lisp interaction Mode
 
 
-    ; MODES
-
-    ;; Lisp interaction Mode
-
-
-    (setq tab-always-indent 'complete)
-    ;DEFAULT
+      (setq tab-always-indent 'complete)
+      ;DEFAULT
 
 
-    ;Allow narrow-to-region
-    (put 'narrow-to-region 'disabled nil)
+      ;Allow narrow-to-region
+      (put 'narrow-to-region 'disabled nil)
 
 
 
-    ;Enable which-key-mode
-    (which-key-mode)
+      ;Enable which-key-mode
+      (which-key-mode)
 
 #+END_SRC
 
@@ -231,54 +233,56 @@
 
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-  ;ORG MODE
+   ;ORG MODE
 
 
-  ;Setting a Global Tag system for org-mode
-  ;; (:startgroup . nil)
-  ;; (:endgroup . nil)
-  ;; <Gramtically around the tag>
-  ;; (:newline)
-  ;; <To indicate a new line break>
-  (set 'org-tag-persistent-alist '(("org_mode" . ?o )
-			("documentation" . ?d)
-			("emacs" . ?e)
-			("project_management" . ?p)
-			("journal_entry" . ?j)))
-
-
-
+   ;Setting a Global Tag system for org-mode
+   ;; (:startgroup . nil)
+   ;; (:endgroup . nil)
+   ;; <Gramtically around the tag>
+   ;; (:newline)
+   ;; <To indicate a new line break>
+   (set 'org-tag-persistent-alist '(("org_mode" . ?o )
+                         ("documentation" . ?d)
+                         ("emacs" . ?e)
+                         ("project_management" . ?p)
+                         ("journal_entry" . ?j)))
 
 
 
 
 
 
-  ;org-mode babel
 
+
+
+   ;org-mode babel execution environment
   (org-babel-do-load-languages
    'org-babel-load-languages
-   '((racket . t)))
+   '((emacs-lisp . nil)
+     (sh . t)
+     (dot . t)))
 
 
-  (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
+
+   (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
 
 
-  ;Enable tabs in code-blocks for org-mode
-  (setq org-src-tab-acts-natively t)
+   ;Enable tabs in code-blocks for org-mode
+   (setq org-src-tab-acts-natively t)
 
-  ; Default Notes File
-  (setq org-default-notes-file "~/base/Interim/thoughts.org")
+   ; Default Notes File
+   (setq org-default-notes-file "~/base/Interim/thoughts.org")
 
-  ; Enable syntax highlighting
-  (setq org-src-fontify-natively t)
+   ; Enable syntax highlighting
+   (setq org-src-fontify-natively t)
 
 
-  ;; Global keys suggested for Org mode
-  (global-set-key (kbd "\C-c l") 'org-store-link)
-  (global-set-key (kbd "\C-c c") 'org-capture)
-  (global-set-key (kbd "\C-c a") 'org-agenda)
-  (global-set-key (kbd "\C-c p") 'org-iswitchb)
+   ;; Global keys suggested for Org mode
+   (global-set-key (kbd "\C-c l") 'org-store-link)
+   (global-set-key (kbd "\C-c c") 'org-capture)
+   (global-set-key (kbd "\C-c a") 'org-agenda)
+   (global-set-key (kbd "\C-c p") 'org-iswitchb)
 
 
 
