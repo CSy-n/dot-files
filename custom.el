@@ -12,7 +12,6 @@
    (quote
     ("5658d26b0a9d06b067c54c417c0d7bcdce4ab42591d503824ad628797791608c" "5c5889cf71cb303abbc026294eb1a414c62fed7d5b3d462af0e57bc7efbc127c" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "507bc496c60b3c517dba91351345d61eb02a66b253990980a159b754ac9f330a" "86cad716ae1270eb974ace9993b46865012053c8b31d182a66baf98015f5e813" "33d5dcb8e99bf2ca583aa861a3236fdf362051aa438b746e8a110d76c5b2b4e6" "d91ef4e714f05fff2070da7ca452980999f5361209e679ee988e3c432df24347" "0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
  '(fci-rule-color "#073642")
-
  '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
  '(highlight-symbol-colors
    (--map
@@ -41,11 +40,9 @@
  '(nrepl-message-colors
    (quote
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
-
-
  '(package-selected-packages
    (quote
-    (monokai-theme which-key company cider paredit rust-mode ace-window helm geiser solarized-theme command-log-mode paradox)))
+    (graphviz-dot-mode monokai-theme which-key company cider paredit rust-mode ace-window helm geiser solarized-theme command-log-mode paradox)))
  '(paradox-github-token t)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
@@ -95,22 +92,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
-
- ;; '(default ((t (:inherit nil :stipple nil :background "#002b36" :foreground "white smoke" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 128 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
- ;; '(cursor ((t (:background "#b59940" :foreground "#002b36" :inverse-video t))))
- ;; '(eshell-prompt ((t (:foreground "olive drab" :weight bold))))
- ;; '(isearch ((t (:background "#d33682" :foreground "#002b36" :weight normal))))
- ;; '(lazy-highlight ((t (:background "#6c71c4" :foreground "#002b36" :weight normal))))
- ;; '(menu ((t (:background "#002b36" :foreground "#839496"))))
- ;; '(minibuffer-prompt ((t (:foreground "white smoke"))))
- ;; '(mode-line ((t (:background "#073642" :foreground "white smoke" :box (:line-width 1 :color "#073642" :style unspecified) :overline "#073642" :underlbine "#284b54"))))
- ;; '(mode-line-buffer-id ((t (:foreground "white smoke" :weight bold))))
-
- ;; '(org-block-begin-line ((t (:inherit org-meta-line :underline nil))))
- ;; '(org-block-end-line ((t (:inherit org-meta-line :overline nil))))
- ;; '(org-level-1 ((t (:inherit variable-pitch :foreground "#859900" :height 1.3))))
- ;; '(org-level-2 ((t (:inherit variable-pitch :foreground "#268bd2" :height 1.2))))
- ;; '(org-level-3 ((t (:inherit variable-pitch :foreground "#cb4b16" :height 1.15))))
- ;; '(region ((t (:background "#0B4B8F" :foreground "#002b36"))))
- ;; '(secondary-selection ((t (:background "#073642")))))
  )

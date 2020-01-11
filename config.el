@@ -59,57 +59,59 @@
      (message "Development Mode enabled...")))
 
 ; Open file 
-(find-file-noselect "~/base/Interim/thoughts.org")
+    (find-file-noselect "~/base/Interim/thoughts.org")
 
  
-; Disable ringing-sound
-(setq ring-bell-function 'ignore)
+    ; Disable ringing-sound
+    (setq ring-bell-function 'ignore)
 
 
-;Scrolling (Smooth)
-(setq scroll-conservatively 10000)
+    ;Scrolling (Smooth)
+    (setq scroll-conservatively 10000)
 
 
-; Emacs C source files...
-(setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
-
-
-
-;UTILITY
-
-;Command-log mode to display or log commands?
-;; (require 'command-log-mode)
-
-;key-metrics
-;==============================
-;; When you want to know the command frequency, type “Alt+x command-frequency”.
-
-;; (require 'command-frequency)
-;(command-frequency-table-load)
-;; (command-frequency-mode 1)
-;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+    ; Emacs C source files...
+    (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
 
 
 
+    ;UTILITY
+
+    ;Command-log mode to display or log commands?
+    ;; (require 'command-log-mode)
+
+    ;key-metrics
+    ;==============================
+    ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+
+    ;; (require 'command-frequency)
+    ;(command-frequency-table-load)
+    ;; (command-frequency-mode 1)
+    ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+
+
+ 
+(setq-default major-mode 'org-mode)
 
 
 
-; MODES
 
-;; Lisp interaction Mode
+    ; MODES
 
-
-(setq tab-always-indent 'complete)
-;DEFAULT
+    ;; Lisp interaction Mode
 
 
-;Allow narrow-to-region
-(put 'narrow-to-region 'disabled nil)
+    (setq tab-always-indent 'complete)
+    ;DEFAULT
+
+
+    ;Allow narrow-to-region
+    (put 'narrow-to-region 'disabled nil)
 
 
 
-;Enable which-key-mode
-(which-key-mode)
+    ;Enable which-key-mode
+    (which-key-mode)
 
 (ido-mode t)
 ;; (setq ido-enable-flex-matching t)
@@ -141,17 +143,51 @@
 ;ORG MODE
 
 
-;Setting a Global Tag system for org-mode
-;; (:startgroup . nil)
-;; (:endgroup . nil)
-;; <Gramtically around the tag>
-;; (:newline)
-;; <To indicate a new line break>
-(set 'org-tag-persistent-alist '(("org_mode" . ?o )
-                      ("documentation" . ?d)
-                      ("emacs" . ?e)
-                      ("project_management" . ?p)
-                      ("journal_entry" . ?j)))
+   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   ;; function to wrap blocks of text in org templates                       ;;
+   ;; e.g. latex or src etc                                                  ;;
+   ;; http://pragmaticemacs.com/emacs/wrap-text-in-an-org-mode-block/        ;;                             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   (defun ax-org-begin-template ()
+     "Make a template at point."
+     (interactive)
+     (if (org-at-table-p)
+         (call-interactively 'org-table-rotate-recalc-marks)
+       (let* ((choices '(("s" . "SRC")
+                         ("e" . "EXAMPLE")
+                         ("q" . "QUOTE")
+                         ("v" . "VERSE")
+                         ("c" . "CENTER")
+                         ("l" . "LaTeX")
+                         ("h" . "HTML")
+                         ("a" . "ASCII")))
+              (key
+               (key-description
+                (vector
+                 (read-key
+                  (concat (propertize "Template type: " 'face 'minibuffer-prompt)
+                          (mapconcat (lambda (choice)
+                                       (concat (propertize (car choice) 'face 'font-lock-type-face)
+                                               ": "
+                                               (cdr choice)))
+                                     choices
+                                     ", ")))))))
+         (let ((result (assoc key choices)))
+           (when result
+             (let ((choice (cdr result)))
+               (cond
+                ((region-active-p)
+                 (let ((start (region-beginning))
+                       (end (region-end)))
+                   (goto-char end)
+                   (insert "\n#+END_" choice)
+                   (goto-char start)
+                   (insert "#+BEGIN_" choice)
+                   (if (equal choice "SRC")
+                       (insert " emacs-lisp"))
+                   (insert "\n")))
+                (t
+                 (insert "#+BEGIN_" choice "\n")
+                 (save-excursion (insert "#+END_" choice))))))))))
 
 
 
@@ -161,28 +197,53 @@
 
 
 
-;org-mode babel
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((racket . t)))
-
-
-(setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
-
-
-;Enable tabs in code-blocks for org-mode
-(setq org-src-tab-acts-natively t)
-
-; Default Notes File
-(setq org-default-notes-file "~/base/Interim/thoughts.org")
-
-; Enable syntax highlighting
-(setq org-src-fontify-natively t)
+  ;Setting a Global Tag system for org-mode
+  ;; (:startgroup . nil)
+  ;; (:endgroup . nil)
+  ;; <Gramtically around the tag>
+  ;; (:newline)
+  ;; <To indicate a new line break>
+  (set 'org-tag-persistent-alist '(("org_mode" . ?o )
+                        ("documentation" . ?d)
+                        ("emacs" . ?e)
+                        ("project_management" . ?p)
+                        ("journal_entry" . ?j)))
 
 
-;; Global keys suggested for Org mode
-(global-set-key (kbd "\C-c l") 'org-store-link)
-(global-set-key (kbd "\C-c c") 'org-capture)
-(global-set-key (kbd "\C-c a") 'org-agenda)
-(global-set-key (kbd "\C-c p") 'org-iswitchb)
+
+
+
+
+
+
+
+;; org-mode babel execution environment
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '())
+
+
+
+
+  (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
+
+
+  ;Enable tabs in code-blocks for org-mode
+  (setq org-src-tab-acts-natively t)
+
+  ; Default Notes File
+  (setq org-default-notes-file "~/base/Interim/thoughts.org")
+
+  ; Enable syntax highlighting
+  (setq org-src-fontify-natively t)
+
+
+  ; Defines a keybinding for the source block template
+  (define-key org-mode-map (kbd "C-<") 'ax-org-begin-template)
+
+
+  ;; Global keys suggested for Org mode
+  (global-set-key (kbd "\C-c l") 'org-store-link)
+  (global-set-key (kbd "\C-c c") 'org-capture)
+  (global-set-key (kbd "\C-c a") 'org-agenda)
+  (global-set-key (kbd "\C-c p") 'org-iswitchb)
