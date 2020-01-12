@@ -241,7 +241,18 @@
 
 #+END_SRC
 
+#+END_SRC
 
+*** Paredit Mode
+
+#+BEGIN_SRC emacs-lisp
+  ; Remap the keybinding C-j to print in current buffer.
+  (eval-after-load 'paredit
+    '(progn
+       (define-key paredit-mode-map (kbd "C-j")
+         'eval-print-last-sexp)))
+
+#+END_SRC
 
 ** [Org Mode]
 
