@@ -122,36 +122,36 @@
 
 
 
-      ; Open file 
-      (find-file-noselect "~/base/Interim/thoughts.org")
+       ; Open file 
+       (find-file-noselect "~/base/Interim/thoughts.org")
 
 
-      ; Disable ringing-sound
-      (setq ring-bell-function 'ignore)
+       ; Disable ringing-sound
+       (setq ring-bell-function 'ignore)
 
 
-      ;Scrolling (Smooth)
-      (setq scroll-conservatively 10000)
+       ;Scrolling (Smooth)
+       (setq scroll-conservatively 10000)
 
 
-      ; Emacs C source files...
-      (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
+       ; Emacs C source files...
+       (setq find-function-C-source-directory "/usr/share/emacs/25.2/c")
 
 
 
-      ;UTILITY
+       ;UTILITY
 
-      ;Command-log mode to display or log commands?
-      ;; (require 'command-log-mode)
+       ;Command-log mode to display or log commands?
+       ;; (require 'command-log-mode)
 
-      ;key-metrics
-      ;==============================
-      ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+       ;key-metrics
+       ;==============================
+       ;; When you want to know the command frequency, type “Alt+x command-frequency”.
 
-      ;; (require 'command-frequency)
-      ;(command-frequency-table-load)
-      ;; (command-frequency-mode 1)
-      ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
+       ;; (require 'command-frequency)
+       ;(command-frequency-table-load)
+       ;; (command-frequency-mode 1)
+       ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
 
 
 
@@ -160,23 +160,23 @@
 
 
 
-      ; MODES
+  ; MODES
 
-      ;; Lisp interaction Mode
-
-
-      (setq tab-always-indent 'complete)
-      ;DEFAULT
+  ;; Lisp interaction Mode
 
 
-      ;Allow narrow-to-region
-      (put 'narrow-to-region 'disabled nil)
+  (setq tab-always-indent 'complete)
+  ;DEFAULT
+
+
+   ;Allow narrow-to-region
+  (put 'narrow-to-region 'disabled nil)
 
 
 
-      ;Enable which-key-mode
- ; (unless (package-installed-p 'which-key)
-  ; (which-key-mode))
+   ;Enable which-key-mode
+  (unless (package-installed-p 'which-key)
+    (which-key-mode))
 
 #+END_SRC
 
