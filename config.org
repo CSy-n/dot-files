@@ -333,7 +333,9 @@
 
 
   (defun ob-confirm-eval (lang body)
-    (not (string= lang "emacs-lisp")))  ; don't ask for emacs-lisp
+    (not (or
+          (string= lang "dot")
+          (string= lang "emacs-lisp"))))  ; don't ask for emacs-lisp
 
   (setq org-confirm-babel-evaluate 'ob-confirm-eval)
 
