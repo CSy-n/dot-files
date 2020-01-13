@@ -334,11 +334,12 @@
 
 
 
-
   ;; org-mode babel execution environment
-  ;; (org-babel-do-load-languages
-  ;;  'org-babel-load-languages
-  ;;  '())
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (dot . t)))
+
 
 
 
