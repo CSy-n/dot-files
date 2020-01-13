@@ -247,7 +247,7 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
   ; Remap the keybinding C-j to print in current buffer.
-  (eval-after-load 'paredit-mode
+  (eval-after-load 'paredit
     '(progn
        (define-key paredit-mode-map (kbd "C-j")
          'eval-print-last-sexp)))
