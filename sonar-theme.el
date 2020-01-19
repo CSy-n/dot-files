@@ -14,6 +14,16 @@
  'sonar
  '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :width normal :height 128 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "white smoke" :background "#002b36" :stipple nil :inherit nil))))
  '(cursor ((((class color) (min-colors 89)) (:foreground "#002b36" :background "#839496" :inverse-video t))))
+
+
+ ; Ido-mode
+'(ido-first-match ((((class color))
+   (:foreground "black"))
+  (t
+   (:slant italic))))
+
+
+ 
  '(highlight ((((class color) (min-colors 89)) (:background "#073642"))))
  '(isearch ((((class color) (min-colors 89)) (:foreground "#002b36" :background "#d33682" :weight normal))))
  '(menu ((((class color) (min-colors 89)) (:foreground "#839496" :background "#002b36"))))
