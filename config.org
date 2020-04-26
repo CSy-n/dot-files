@@ -75,10 +75,11 @@
 #+BEGIN_SRC emacs-lisp :tangle yes
 
   (setq emacs-development t)
+;  (setq warning-minimum-level :emergency)
 
   (eval-after-load "config"
     (if (eq emacs-development t)
-       (message "Development Mode enabled...")))
+	(message "Development Mode enabled...")))
 
 
 #+END_SRC
@@ -96,6 +97,7 @@
   (push (expand-file-name "~/.emacs.d/metrics/" "~/.emacs.d/org-mode") load-path)
   (add-to-list 'load-path '"~/.emacs.d/metrics")
   (add-to-list 'load-path '"~/.emacs.d/org-mode/")
+  (add-to-list 'load-path '"~/.emacs.d/lib/")
   (add-to-list 'load-path '"~/.emacs.d/ax/")
 
 #+END_SRC
@@ -105,15 +107,16 @@
 
 * Aesthetic Customizations
 
-#+NAME: customizations
+#+NAME: thematics
 #+BEGIN_SRC emacs-lisp :tangle no
-  ; CUSTOMIZATIONS
 
-   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-   (load custom-file)
-   (load-theme 'alpha t)
-;   (load-theme 'monokai t); 
-;  (load-theme 'detai t)
+
+
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (load custom-file)
+  ;; (load-theme 'monokai t)
+  (load-theme 'alpha t)
+  ;;(load-theme 'detai t)
 
 
 #+END_SRC
@@ -137,8 +140,9 @@
        (setq scroll-conservatively 10000)
 
 
+
        ; Emacs C source files...
-       (setq find-function-C-source-directory "~/base/Emacs/emacs-25.2/src/")
+       (setq find-function-C-source-directory "/usr/share/emacs/25.2/c/")
 
 
 
@@ -149,7 +153,7 @@
 
        ;key-metrics
        ;==============================
-       ;; When you want to know the command frequency, type “Alt+x command-frequency”.
+  ;; When you want to know the command frequency, type “Alt+x command-frequency”.
 
        ;; (require 'command-frequency)
        ;(command-frequency-table-load)
@@ -157,9 +161,19 @@
        ;; (command-frequency-autosave-mode 1);; make emacs aware of this package
 
 
+  ; Lisp Mode Jump Cursor Visual effect
+  (setq blink-matching-paren 'jump)
+  (setq blink-matching-delay 0.35)
+
+  (require 'highlight-parentheses)
+
 
   (setq-default major-mode 'org-mode)
 
+
+
+  ; Use `ibuffer' instead of `buffer'
+  ;  (global-set-key (kbd "C-x C-b") 'ibuffer)
 
   ;Require dired-x 
   (require 'dired-x)
@@ -208,13 +222,12 @@
 #+BEGIN_SRC emacs-lisp :tangle yes
 
 
-  ;THEMATICS
 
   ;Enable global highlight-line mode
   (global-hl-line-mode)
 
   ;Menu Bar Toggle
-  (menu-bar-mode 1)
+  (menu-bar-mode -1)
 
   ;Tool Bar Toggle
   (tool-bar-mode -1)
@@ -235,17 +248,27 @@
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 
+  ;;; Paredit
   (when (package-installed-p 'paredit)
-   (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-   (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-   (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-   (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-   (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-   (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-   (add-hook 'clojure-mode-hook           #'cider-mode))
+    (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+    (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+    (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+    (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+    (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+    (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+    (add-hook 'clojure-mode-hook           #'cider-mode))
 
+  ;;; Hideshow
+  (add-hook 'emacs-lisp-mode-hook (lambda () (hs-minor-mode 1)))
 
-   (add-hook 'emacs-lisp-mode-hook (lambda () (hs-minor-mode 1)))
+  ;;; Highlight-parenthesis
+
+  (add-hook 'emacs-lisp-mode-hook       #'highlight-parentheses-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'highlight-parentheses-mode)
+  (add-hook 'ielm-mode-hook             #'highlight-parentheses-mode)
+  (add-hook 'lisp-mode-hook             #'highlight-parentheses-mode)
+  (add-hook 'lisp-interaction-mode-hook #'highlight-parentheses-mode)
+  (add-hook 'scheme-mode-hook           #'highlight-parentheses-mode)                  
 
 
 
@@ -365,7 +388,7 @@
         'org-babel-load-languages
         '((emacs-lisp . t)
           (dot . t)
-          (sh . t)))
+          (shell . t)))
 
 
      ;; redisplay images once source block executed
