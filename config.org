@@ -8,17 +8,11 @@
 
 
 
-* Initialization
- This Source code is placed in *~/.emacs*.
+** Initialization
+ This Source code is required in *~/.emacs*.
 
 #+BEGIN_SRC emacs-lisp :tangle no
- (package-initialize)
-
-
-
-(org-babel-load-file
- (expand-file-name "config.org" user-emacs-directory))
-
+(load "~/.emacs.d/start.el") ; `start.el' is the initialization file
 #+END_SRC
 
 
@@ -108,15 +102,15 @@
 * Aesthetic Customizations
 
 #+NAME: thematics
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle yes
 
 
 
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file)
   ;; (load-theme 'monokai t)
-  (load-theme 'alpha t)
-  ;;(load-theme 'detai t)
+  ;; (load-theme 'alpha t)
+  (load-theme 'detai t)
 
 
 #+END_SRC
@@ -243,6 +237,26 @@
 * Mode Specific Configuration
 
 
+** Python
+
+Change the default indentation for python-mode
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq-default python-indent-offset 2)
+#+END_SRC
+
+Create an interactive utility for toggling indentation
+#+BEGIN_SRC emacs-lisp :tangle yes
+(defun ax-toggle-python-mode--tab-indent ()
+  "Toggle `indent-tabs-mode'."
+  (interactive)
+  (setq-local indent-tabs-mode (not indent-tabs-mode)))
+
+#+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (setq-default python-indent-guess-indent-offset-verbose nil)
+#+END_SRC
 
 ** Schemes
 
@@ -286,8 +300,6 @@
          'eval-print-last-sexp)))
 
 #+END_SRC
-
-
 
 
 ** Rust
@@ -388,7 +400,8 @@
         'org-babel-load-languages
         '((emacs-lisp . t)
           (dot . t)
-          (shell . t)))
+          (shell . t)
+	  (python . t)))
 
 
      ;; redisplay images once source block executed
@@ -421,7 +434,6 @@
 
 
 #+END_SRC
-
 
 
 ** Evil Mode
