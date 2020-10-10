@@ -16,6 +16,29 @@
 #+END_SRC
 
 
+
+
+** Required Packages
+
+ Manual installation of certain packages required - You may need to follow : [[*Package%20Signatures%20for%20Installation][Package Signatures for Installation]]
+
+ Installation of packages:
+
+ - `which-key-mode'
+
+
+*** Package Signatures for Installation
+
+ Execute the following code with C-c (Control-c)
+#+BEGIN_SRC emacs-lisp :tangle no
+
+  (setq package-check-signature nil)
+
+#+END_SRC
+
+If required install `gnu-elpa-keyring-update'
+
+
 * Prelude 
 #+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
   ;; (setq inhibit-startup-echo-area-message (user-login-name))
@@ -28,14 +51,14 @@
 
 
   ;; (setq inhibit-startup-message t)
-                                          ;external---------------
-                                          ;architecture-----------
-                                          ;origin-----------------
-                                          ;source-----------------
-                                          ;core-------------------
-                                          ;exo-arch---------------
+					  ;external---------------
+					  ;architecture-----------
+					  ;origin-----------------
+					  ;source-----------------
+					  ;core-------------------
+					  ;exo-arch---------------
 
-                                          ; The external operating environment
+					  ; The external operating environment
   (setq base (expand-file-name "~/base/"))
 
 
@@ -47,13 +70,12 @@
   ;; Otherwise visit instead
   (let ((journal (expand-file-name "journal.org" base)))
     (if (> (length command-line-args) 1) 
-        (find-file-noselect journal)
+	(find-file-noselect journal)
       (setq initial-buffer-choice journal))
     journal)
 
-                                          ; Open file 
-  (find-file-noselect "~/base/Interim/thoughts.org")
 
+  (require 'ax)
   ;; (find-file-noselect
   ;;  (expand-file-name "journal.org" base)))   
 
@@ -68,7 +90,7 @@
 #+NAME: development-setup
 #+BEGIN_SRC emacs-lisp :tangle yes
 
-  (setq emacs-development t)
+  (setq emacs-development nil)
 ;  (setq warning-minimum-level :emergency)
 
   (eval-after-load "config"
@@ -108,7 +130,7 @@
 
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file)
-  ;; (load-theme 'monokai t)
+  (load-theme 'monokai t)
   ;; (load-theme 'alpha t)
   (load-theme 'detai t)
 
@@ -119,12 +141,6 @@
 * General Configuration
 
 #+BEGIN_SRC emacs-lisp :tangle yes :noweb yes
-
-
-
-       ; Open file 
-       (find-file-noselect "~/base/Interim/thoughts.org")
-
 
        ; Disable ringing-sound
        (setq ring-bell-function 'ignore)
@@ -191,7 +207,20 @@
   (unless (package-installed-p 'which-key)
     (which-key-mode))
 
+  ; Set a default org-directory
+  (setq org-directory  (concat base "Interim/"))
+
+  ; Set Default Capture
+  (setq org-default-notes-file (concat org-directory "/thoughts.org"))
+
+
+  ; Open file after Config has Configured Org-Mode
+  (eval-after-load "config"					
+   '(find-file-noselect "~/base/Interim/thoughts.org"))
+
+
 #+END_SRC
+
 
 
 
@@ -235,6 +264,7 @@
 
 
 * Mode Specific Configuration
+
 
 
 ** Python
@@ -313,127 +343,143 @@ Create an interactive utility for toggling indentation
 
 
 #+BEGIN_SRC emacs-lisp :tangle yes
-        ;ORG MODE
+    ;ORG MODE
 
 
-         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-         ;; function to wrap blocks of text in org templates                       ;;
-         ;; e.g. latex or src etc                                                  ;;
-         ;; http://pragmaticemacs.com/emacs/wrap-text-in-an-org-mode-block/        ;;                             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-         (defun ax-org-begin-template ()
-           "Make a template at point."
-           (interactive)
-           (if (org-at-table-p)
-               (call-interactively 'org-table-rotate-recalc-marks)
-             (let* ((choices '(("s" . "SRC")
-                               ("e" . "EXAMPLE")
-                               ("q" . "QUOTE")
-                               ("v" . "VERSE")
-                               ("c" . "CENTER")
-                               ("l" . "LaTeX")
-                               ("h" . "HTML")
-                               ("a" . "ASCII")))
-                    (key
-                     (key-description
-                      (vector
-                       (read-key
-                        (concat (propertize "Template type: " 'face 'minibuffer-prompt)
-                                (mapconcat (lambda (choice)
-                                             (concat (propertize (car choice) 'face 'font-lock-type-face)
-                                                     ": "
-                                                     (cdr choice)))
-                                           choices
-                                           ", ")))))))
-               (let ((result (assoc key choices)))
-                 (when result
-                   (let ((choice (cdr result)))
-                     (cond
-                      ((region-active-p)
-                       (let ((start (region-beginning))
-                             (end (region-end)))
-                         (goto-char end)
-                         (insert "\n#+END_" choice)
-                         (goto-char start)
-                         (insert "#+BEGIN_" choice)
-                         (if (equal choice "SRC")
-                             (insert " emacs-lisp"))
-                         (insert "\n")))
-                      (t
-                       (insert "#+BEGIN_" choice "\n")
-                       (save-excursion (insert "#+END_" choice))))))))))
-
-
-
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ;; function to wrap blocks of text in org templates                       ;;
+     ;; e.g. latex or src etc                                                  ;;
+     ;; http://pragmaticemacs.com/emacs/wrap-text-in-an-org-mode-block/        ;;                             ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     (defun ax-org-begin-template ()
+       "Make a template at point."
+       (interactive)
+       (if (org-at-table-p)
+	   (call-interactively 'org-table-rotate-recalc-marks)
+	 (let* ((choices '(("s" . "SRC")
+			   ("e" . "EXAMPLE")
+			   ("q" . "QUOTE")
+			   ("v" . "VERSE")
+			   ("c" . "CENTER")
+			   ("l" . "LaTeX")
+			   ("h" . "HTML")
+			   ("a" . "ASCII")))
+		(key
+		 (key-description
+		  (vector
+		   (read-key
+		    (concat (propertize "Template type: " 'face 'minibuffer-prompt)
+			    (mapconcat (lambda (choice)
+					 (concat (propertize (car choice) 'face 'font-lock-type-face)
+						 ": "
+						 (cdr choice)))
+				       choices
+				       ", ")))))))
+	   (let ((result (assoc key choices)))
+	     (when result
+	       (let ((choice (cdr result)))
+		 (cond
+		  ((region-active-p)
+		   (let ((start (region-beginning))
+			 (end (region-end)))
+		     (goto-char end)
+		     (insert "\n#+END_" choice)
+		     (goto-char start)
+		     (insert "#+BEGIN_" choice)
+		     (if (equal choice "SRC")
+			 (insert " emacs-lisp"))
+		     (insert "\n")))
+		  (t
+		   (insert "#+BEGIN_" choice "\n")
+		   (save-excursion (insert "#+END_" choice))))))))))
 
 
 
 
 
 
-        ;Setting a Global Tag system for org-mode
-        ;; (:startgroup . nil)
-        ;; (:endgroup . nil)
-        ;; <Gramtically around the tag>
-        ;; (:newline)
-        ;; <To indicate a new line break>
-        (set 'org-tag-persistent-alist '(("org_mode" . ?o )
-                              ("documentation" . ?d)
-                              ("emacs" . ?e)
-                              ("project_management" . ?p)
-                              ("journal_entry" . ?j)))
 
 
 
+    ;Setting a Global Tag system for org-mode
+    ;; (:startgroup . nil)
+    ;; (:endgroup . nil)
+    ;; <Gramtically around the tag>
+    ;; (:newline)
+    ;; <To indicate a new line break>
+    (set 'org-tag-persistent-alist '(("org_mode" . ?o )
+			  ("documentation" . ?d)
+			  ("emacs" . ?e)
+			  ("project_management" . ?p)
+			  ("journal_entry" . ?j)))
 
 
-
-      (defun ob-confirm-eval (lang body)
-        (not (or
-              (string= lang "dot")
-              (string= lang "emacs-lisp"))))  ; don't ask for emacs-lisp
-
-      (setq org-confirm-babel-evaluate 'ob-confirm-eval)
-
-
-      ;; org-mode babel execution environment
-       (org-babel-do-load-languages
-        'org-babel-load-languages
-        '((emacs-lisp . t)
-          (dot . t)
-          (shell . t)
-	  (python . t)))
+  ;; (defun ob-confirm-eval (lang body)
+  ;;   (not (or
+  ;;         (string= lang "dot")
+  ;;         (string= lang "emacs-lisp")
+  ;;         (and (string= lang "python")
+  ;;              (if (not (boundp 'org-confirm-babel-evaluate--python-count))
+  ;;                  (progn
+  ;;                    (set 'org-confirm-babel-evaluate--python-count 0)
+  ;;                    t)
+  ;;                (incf org-confirm-babel-evaluate--python-count))))))  ; don't ask for emacs-lisp
 
 
-     ;; redisplay images once source block executed
+  (defun ob-confirm-eval (lang body)
+    (not (or
+	  (string= lang "dot")
+	  (string= lang "emacs-lisp")
+	  (string= lang "python"))))  ; don't ask for emacs-lisp
+
+  (setq org-confirm-babel-evaluate 'ob-confirm-eval)
+
+
+  ;; org-mode babel execution environment
+   (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)
+      (dot . t)
+      ; (shell . t)
+      (python . t)))
+
+
+    ;; redisplay images once source block executed
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
 
 
-        (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
+    (setq org-babel-racket-command "~/.emacs.d/org-mode/ob-racket")
 
 
-        ;Enable tabs in code-blocks for org-mode
-        (setq org-src-tab-acts-natively t)
+    ;Enable tabs in code-blocks for org-mode
+    (setq org-src-tab-acts-natively t)
 
-        ; Default Notes File
-        (setq org-default-notes-file "~/base/Interim/thoughts.org")
+    ; Enable syntax highlighting
+    (setq org-src-fontify-natively t)
 
-        ; Enable syntax highlighting
-        (setq org-src-fontify-natively t)
+    ; Default Notes File
+    (setq org-default-notes-file "~/base/Interim/thoughts.org")
+
+    ; Non-nil means entering Org-mode will switch to OVERVIEW.
+    (setq org-startup-folded t)
 
 
-        ; Defines a keybinding for the source block template
-        (define-key org-mode-map (kbd "C-<") 'ax-org-begin-template)
+    ; Defines a keybinding for the source block template
+    (define-key org-mode-map (kbd "C-c C-,") 'ax-org-begin-template)
 
+    (define-key org-mode-map (kbd "C-c o") 'ax-org-insert-journal-heading)
 
-        ;; Global keys suggested for Org mode
-        (global-set-key (kbd "\C-c l") 'org-store-link)
-        (global-set-key (kbd "\C-c c") 'org-capture)
-        (global-set-key (kbd "\C-c a") 'org-agenda)
-        (global-set-key (kbd "\C-c p") 'org-iswitchb)
+    ;; Global keys suggested for Org mode
+    (global-set-key (kbd "\C-c l") 'org-store-link)
+    (global-set-key (kbd "\C-c c") 'org-capture)
+    (global-set-key (kbd "\C-c a") 'org-agenda)
+    (global-set-key (kbd "\C-c p") 'org-iswitchb)
 
 
 
 #+END_SRC
+
+#+RESULTS:
+: org-iswitchb
 
 
 ** Evil Mode
@@ -446,4 +492,11 @@ Create an interactive utility for toggling indentation
 
 (setq evil-insert-state-cursor '("#268bd2" box))
 
+#+END_SRC
+
+
+* Emacs Server Technology
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(load "emacs-evaluation-server")
 #+END_SRC
